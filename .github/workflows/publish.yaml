@@ -1,0 +1,38 @@
+# Publishes one package to pub.dev when a tag like `tiktok_auth-v0.1.0` is
+# pushed. Uses pub.dev automated publishing (GitHub OIDC), so no secrets are
+# stored. Enable it per package on pub.dev: Admin > Automated publishing >
+# GitHub Actions, repository `<owner>/tiktok_auth`, tag pattern
+# `<package>-v{{version}}`.
+#
+# Publish in dependency order: platform_interface, android, ios, tiktok_auth.
+name: Publish
+
+on:
+  push:
+    tags:
+      - "tiktok_auth-v[0-9]+.[0-9]+.[0-9]+*"
+      - "tiktok_auth_platform_interface-v[0-9]+.[0-9]+.[0-9]+*"
+      - "tiktok_auth_android-v[0-9]+.[0-9]+.[0-9]+*"
+      - "tiktok_auth_ios-v[0-9]+.[0-9]+.[0-9]+*"
+      - "tiktok_auth_server-v[0-9]+.[0-9]+.[0-9]+*"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: pub.dev
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      # Configures the pub.dev OIDC token used by `pub publish`.
+      - uses: dart-lang/setup-dart@v1
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - name: Find package from tag
+        id: package
+        run: echo "name=${GITHUB_REF_NAME%-v*}" >> "$GITHUB_OUTPUT"
+      - run: flutter pub get
+      - name: Publish
+        working-directory: packages/${{ steps.package.outputs.name }}
+        run: flutter pub publish --force

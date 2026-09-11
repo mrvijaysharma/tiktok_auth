@@ -1,0 +1,21 @@
+name: tiktok_auth_server
+description: Server-side helpers for TikTok Login Kit. Exchange authorization codes, refresh and revoke tokens, and fetch user info. Pure Dart.
+version: 0.1.0
+repository: https://github.com/mrvijaysharma/tiktok_auth/tree/main/packages/tiktok_auth_server
+issue_tracker: https://github.com/mrvijaysharma/tiktok_auth/issues
+resolution: workspace
+topics:
+  - tiktok
+  - oauth
+  - authentication
+  - server
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  http: ^1.6.0
+
+dev_dependencies:
+  test: ^1.25.0
+  very_good_analysis: ^10.2.0

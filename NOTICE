@@ -1,0 +1,13 @@
+tiktok_auth is an unofficial, community-maintained project. It is not
+affiliated with, endorsed by, or sponsored by TikTok Pte. Ltd. "TikTok" is a
+trademark of its respective owner and is used here only to describe the service
+this software integrates with.
+
+The Android and iOS implementations depend on the TikTok OpenSDK, which TikTok
+distributes under its own licence and the TikTok Platform Policy:
+
+  - iOS:     https://github.com/tiktok/tiktok-opensdk-ios/blob/main/LICENSE
+  - Android: https://github.com/tiktok/tiktok-opensdk-android/blob/main/LICENSE
+
+The TikTok OpenSDK is fetched by your build tools (Swift Package Manager,
+CocoaPods or Gradle); it is not bundled in these packages.

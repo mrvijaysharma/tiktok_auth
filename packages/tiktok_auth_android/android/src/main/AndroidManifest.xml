@@ -1,0 +1,47 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Lets the TikTok SDK detect the TikTok app and Custom Tabs browsers on
+         Android 11+ (package visibility). -->
+    <queries>
+        <package android:name="com.zhiliaoapp.musically" />
+        <package android:name="com.ss.android.ugc.trill" />
+        <intent>
+            <action android:name="android.support.customtabs.action.CustomTabsService" />
+        </intent>
+    </queries>
+
+    <application>
+        <!-- Owns one sign-in attempt. The TikTok app and the Custom Tab are
+             launched from it, so it resumes exactly when the user returns. -->
+        <activity
+            android:name="dev.tiktokauth.android.TikTokAuthActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:exported="false"
+            android:theme="@style/TikTokAuthTranslucent" />
+
+        <!-- Receives the redirect URI as a verified App Link. Set
+             tiktokRedirectHost and tiktokRedirectPath with
+             manifestPlaceholders in the app's build.gradle(.kts).
+             The leading "/" of the path is written here because AAPT
+             validates this manifest before the placeholders are replaced,
+             so tiktokRedirectPath is given without it. -->
+        <activity
+            android:name="dev.tiktokauth.android.TikTokAuthCallbackActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:noHistory="true"
+            android:theme="@style/TikTokAuthTranslucent">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="${tiktokRedirectHost}"
+                    android:pathPrefix="/${tiktokRedirectPath}"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

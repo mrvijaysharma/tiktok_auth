@@ -1,0 +1,37 @@
+name: tiktok_auth_ios
+description: iOS implementation of the tiktok_auth plugin, built on the official TikTok OpenSDK Login Kit.
+version: 0.1.0
+repository: https://github.com/mrvijaysharma/tiktok_auth/tree/main/packages/tiktok_auth_ios
+issue_tracker: https://github.com/mrvijaysharma/tiktok_auth/issues
+resolution: workspace
+topics:
+  - tiktok
+  - authentication
+  - login
+  - oauth
+
+environment:
+  sdk: ^3.11.0
+  flutter: ">=3.41.0"
+
+flutter:
+  plugin:
+    implements: tiktok_auth
+    platforms:
+      ios:
+        pluginClass: TikTokAuthPlugin
+        dartPluginClass: TikTokAuthIOS
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # Imported by the Pigeon-generated lib/src/messages.g.dart.
+  meta: ^1.17.0
+  tiktok_auth_platform_interface: ^0.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.5
+  pigeon: ^28.1.0
+  very_good_analysis: ^10.2.0

@@ -1,0 +1,46 @@
+name: tiktok_auth_workspace
+publish_to: none
+
+environment:
+  sdk: ^3.11.0
+
+workspace:
+  - packages/tiktok_auth
+  - packages/tiktok_auth/example
+  - packages/tiktok_auth_platform_interface
+  - packages/tiktok_auth_android
+  - packages/tiktok_auth_ios
+  - packages/tiktok_auth_server
+
+dev_dependencies:
+  melos: ^8.7.0
+
+melos:
+  scripts:
+    analyze:
+      description: Analyze every package with strict lints.
+      exec: dart analyze --fatal-infos .
+
+    format:
+      description: Fail if any Dart file is not formatted.
+      exec: dart format --output=none --set-exit-if-changed .
+
+    test:flutter:
+      description: Run unit tests in Flutter packages.
+      exec: flutter test --coverage
+      packageFilters:
+        flutter: true
+        dirExists: test
+
+    test:dart:
+      description: Run unit tests in pure Dart packages.
+      exec: dart test
+      packageFilters:
+        flutter: false
+        dirExists: test
+
+    pigeon:
+      description: Regenerate Pigeon bindings in the platform packages.
+      exec: dart run pigeon --input pigeons/messages.dart
+      packageFilters:
+        fileExists: pigeons/messages.dart

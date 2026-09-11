@@ -1,0 +1,38 @@
+name: tiktok_auth
+description: Unofficial TikTok Login Kit plugin for Flutter. Uses the official TikTok SDKs with PKCE, CSRF state checks, typed errors and no AppDelegate edits.
+version: 0.1.0
+repository: https://github.com/mrvijaysharma/tiktok_auth/tree/main/packages/tiktok_auth
+issue_tracker: https://github.com/mrvijaysharma/tiktok_auth/issues
+resolution: workspace
+topics:
+  - tiktok
+  - login
+  - authentication
+  - oauth
+  - social-login
+
+environment:
+  sdk: ^3.11.0
+  flutter: ">=3.41.0"
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        default_package: tiktok_auth_android
+      ios:
+        default_package: tiktok_auth_ios
+
+dependencies:
+  # Used only by `dart run tiktok_auth:doctor`, to fingerprint certificates.
+  crypto: ^3.0.7
+  flutter:
+    sdk: flutter
+  tiktok_auth_android: ^0.1.0
+  tiktok_auth_ios: ^0.1.0
+  tiktok_auth_platform_interface: ^0.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  very_good_analysis: ^10.2.0

@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "tiktok-opensdk-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tiktok/tiktok-opensdk-ios",
+      "state" : {
+        "revision" : "cb0cdc785b653c3be116fd1302ec280fbcfac695",
+        "version" : "2.5.0"
+      }
+    }
+  ],
+  "version" : 2
+}

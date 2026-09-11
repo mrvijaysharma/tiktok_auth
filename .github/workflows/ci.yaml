@@ -1,0 +1,101 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dart:
+    name: Dart (Flutter ${{ matrix.flutter }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # The minimum supported version and the latest stable release.
+        flutter: ["3.41.0", "latest"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: ${{ matrix.flutter == 'latest' && '' || matrix.flutter }}
+          cache: true
+      - run: flutter pub get
+      - run: dart run melos run format --no-select
+      - run: dart run melos run analyze --no-select
+      - run: dart run melos run test:flutter --no-select
+      - run: dart run melos run test:dart --no-select
+      # Catches what only pub.dev validates, such as a missing dependency.
+      - run: dart run melos exec --no-private -- flutter pub publish --dry-run
+
+  android:
+    name: Android
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - name: Build example (debug)
+        working-directory: packages/tiktok_auth/example
+        run: flutter build apk --debug
+      - name: Build example (release, R8)
+        working-directory: packages/tiktok_auth/example
+        run: flutter build apk --release
+      - name: Kotlin unit tests
+        working-directory: packages/tiktok_auth/example/android
+        run: ./gradlew :tiktok_auth_android:testDebugUnitTest
+
+  ios:
+    name: iOS (${{ matrix.dependencies }})
+    runs-on: macos-15
+    strategy:
+      fail-fast: false
+      matrix:
+        dependencies: [swift-package-manager, cocoapods]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Select dependency manager
+        run: |
+          if [ "${{ matrix.dependencies }}" = "swift-package-manager" ]; then
+            flutter config --enable-swift-package-manager
+          else
+            flutter config --no-enable-swift-package-manager
+          fi
+      - run: flutter pub get
+      - name: Build example
+        working-directory: packages/tiktok_auth/example
+        run: flutter build ios --simulator --debug
+
+  pana:
+    name: Package score
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: dart pub global activate pana
+      - name: Score publishable packages
+        run: |
+          for package in tiktok_auth_platform_interface tiktok_auth_android tiktok_auth_ios tiktok_auth tiktok_auth_server; do
+            echo "::group::$package"
+            (cd "packages/$package" && dart pub global run pana --no-warning .)
+            echo "::endgroup::"
+          done

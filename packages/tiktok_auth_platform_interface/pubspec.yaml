@@ -1,0 +1,25 @@
+name: tiktok_auth_platform_interface
+description: A common platform interface for the tiktok_auth plugin. Platform implementations extend TikTokAuthPlatform.
+version: 0.1.0
+repository: https://github.com/mrvijaysharma/tiktok_auth/tree/main/packages/tiktok_auth_platform_interface
+issue_tracker: https://github.com/mrvijaysharma/tiktok_auth/issues
+resolution: workspace
+topics:
+  - tiktok
+  - authentication
+  - login
+  - oauth
+
+environment:
+  sdk: ^3.11.0
+  flutter: ">=3.41.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  plugin_platform_interface: ^2.1.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  very_good_analysis: ^10.2.0

@@ -1,0 +1,59 @@
+name: Bug report
+description: Something does not work as documented.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Most TikTok Login problems are configuration problems. Before filing,
+        please check the Troubleshooting section of the README.
+  - type: input
+    id: version
+    attributes:
+      label: tiktok_auth version
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options: [Android, iOS]
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: OS version and device
+      placeholder: Android 15 on Pixel 8 / iOS 26.1 on iPhone 16
+    validations:
+      required: true
+  - type: dropdown
+    id: tiktok-app
+    attributes:
+      label: TikTok app
+      options: [Installed, Not installed (browser flow), Both]
+    validations:
+      required: true
+  - type: textarea
+    id: error
+    attributes:
+      label: Error
+      description: The full output of `TikTokAuthException.toString()`, or what happened instead.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Configuration checks
+      options:
+        - label: "`TikTokAuth.instance.initialize()` completes without a `misconfigured` error."
+        - label: The redirect domain serves `/.well-known/apple-app-site-association` and `/.well-known/assetlinks.json` over https without redirects.
+        - label: The bundle ID / package name and signing certificates registered in the TikTok developer portal match this build.

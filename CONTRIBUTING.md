@@ -19,15 +19,17 @@ dart run melos run test:flutter --no-select
 
 ## Platform channels
 
-Channels are generated with [Pigeon](https://pub.dev/packages/pigeon). After
-changing `pigeons/messages.dart` in a platform package, run:
+Channels are generated with [Pigeon](https://pub.dev/packages/pigeon). The
+schemas live in `tool/pigeon`, outside the workspace, so that the packages
+still resolve on the minimum Flutter version. After changing
+`tool/pigeon/android.dart` or `tool/pigeon/ios.dart`, run:
 
 ```bash
 dart run melos run pigeon --no-select
 ```
 
-Keep the Android and iOS Pigeon files identical unless a platform needs
-something the other does not.
+Keep the two schemas identical unless a platform needs something the other
+does not. CI fails if the generated files are out of date.
 
 ## Native tests
 

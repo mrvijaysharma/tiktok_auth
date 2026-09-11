@@ -40,7 +40,8 @@ melos:
         dirExists: test
 
     pigeon:
-      description: Regenerate Pigeon bindings in the platform packages.
-      exec: dart run pigeon --input pigeons/messages.dart
-      packageFilters:
-        fileExists: pigeons/messages.dart
+      description: Regenerate the Pigeon bindings of the Android and iOS packages.
+      # Pigeon lives in tool/pigeon, outside the workspace, so the packages
+      # still resolve on the minimum Flutter version. Its Dart output is then
+      # formatted like the rest of the code.
+      run: cd tool/pigeon && dart pub get && dart run pigeon --input android.dart && dart run pigeon --input ios.dart && cd ../.. && dart format packages/tiktok_auth_android/lib/src/messages.g.dart packages/tiktok_auth_ios/lib/src/messages.g.dart

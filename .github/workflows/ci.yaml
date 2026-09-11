@@ -16,22 +16,30 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # The minimum supported version and the latest stable release.
-        flutter: ["3.41.0", "latest"]
+        # The minimum supported version and the latest 3.x stable release.
+        flutter: ["3.41.0", "3.x"]
     steps:
       - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: ${{ matrix.flutter == 'latest' && '' || matrix.flutter }}
+          flutter-version: ${{ matrix.flutter }}
           cache: true
       - run: flutter pub get
-      - run: dart run melos run format --no-select
+      # The formatter changes slightly between Dart releases, so formatting is
+      # checked with the latest stable release only.
+      - if: matrix.flutter != '3.41.0'
+        run: dart run melos run format --no-select
       - run: dart run melos run analyze --no-select
       - run: dart run melos run test:flutter --no-select
       - run: dart run melos run test:dart --no-select
       # Catches what only pub.dev validates, such as a missing dependency.
       - run: dart run melos exec --no-private -- flutter pub publish --dry-run
+      - name: Pigeon bindings are up to date
+        if: matrix.flutter != '3.41.0'
+        run: |
+          dart run melos run pigeon --no-select
+          git diff --exit-code
 
   android:
     name: Android

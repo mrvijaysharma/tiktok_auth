@@ -1,0 +1,12 @@
+name: tiktok_auth_pigeon
+description: Generates the platform channel code of tiktok_auth_android and tiktok_auth_ios.
+publish_to: none
+
+# Not a workspace member: Pigeon needs a newer `meta` than the minimum Flutter
+# version pins, so it must not take part in the packages' resolution.
+
+environment:
+  sdk: ^3.11.0
+
+dev_dependencies:
+  pigeon: ^28.1.0

@@ -1,11 +1,14 @@
+// Pigeon schema of tiktok_auth_ios. Keep it identical to android.dart apart
+// from the options. Regenerate with: dart run melos run pigeon --no-select
 import 'package:pigeon/pigeon.dart';
 
 @ConfigurePigeon(
   PigeonOptions(
-    dartOut: 'lib/src/messages.g.dart',
-    swiftOut: 'ios/tiktok_auth_ios/Sources/tiktok_auth_ios/Messages.g.swift',
+    dartOut: '../../packages/tiktok_auth_ios/lib/src/messages.g.dart',
+    swiftOut:
+        '../../packages/tiktok_auth_ios/ios/tiktok_auth_ios/Sources/tiktok_auth_ios/Messages.g.swift',
     swiftOptions: SwiftOptions(),
-    copyrightHeader: 'pigeons/copyright.txt',
+    copyrightHeader: 'copyright.txt',
     dartPackageName: 'tiktok_auth_ios',
   ),
 )

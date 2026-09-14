@@ -89,6 +89,13 @@ jobs:
       - name: Build example
         working-directory: packages/tiktok_auth/example
         run: flutter build ios --simulator --debug
+      - name: Swift unit tests
+        if: matrix.dependencies == 'swift-package-manager'
+        working-directory: packages/tiktok_auth/example/ios
+        run: |
+          set -o pipefail
+          udid=$(xcrun simctl list devices available --json | python3 -c 'import json,sys; d=json.load(sys.stdin)["devices"]; print(next(x["udid"] for r in sorted(d, reverse=True) if ".iOS-" in r for x in d[r] if x["name"].startswith("iPhone")))')
+          xcodebuild test -workspace Runner.xcworkspace -scheme Runner -destination "id=$udid" CODE_SIGNING_ALLOWED=NO | grep -E "Test [Cc]ase .*(passed|failed)|error:|\*\* TEST"
 
   pana:
     name: Package score

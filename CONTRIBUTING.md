@@ -34,7 +34,14 @@ does not. CI fails if the generated files are out of date.
 ## Native tests
 
 - Kotlin: `cd packages/tiktok_auth/example/android && ./gradlew :tiktok_auth_android:testDebugUnitTest`
-- Swift: run the `RunnerTests` scheme of `packages/tiktok_auth/example/ios`.
+- Swift: open `packages/tiktok_auth/example/ios/Runner.xcworkspace` and run the
+  tests of the `Runner` scheme (Product > Test), or from that folder:
+  `xcodebuild test -workspace Runner.xcworkspace -scheme Runner -destination 'platform=iOS Simulator,name=<an iPhone simulator>'`.
+  Run `flutter build ios --simulator --debug` in the example first.
+
+With Flutter versions that use CocoaPods instead of Swift Package Manager
+(3.41 by default), `flutter pub get` adds a `Podfile` and `#include?` lines to
+`example/ios/Flutter/*.xcconfig`. Don't commit those changes.
 
 ## Before a release
 

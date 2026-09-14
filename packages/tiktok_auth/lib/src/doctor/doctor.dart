@@ -171,9 +171,17 @@ Future<int> runDoctor(
     return 1;
   }
   final redirect = Uri.parse(redirectUri);
-  report
-    ..pass('Client key: $clientKey')
-    ..pass('Redirect URI: $redirectUri');
+  if (_isPlaceholder(clientKey)) {
+    report.error(
+      'Client key "$clientKey" is a placeholder.',
+      fix:
+          'Copy your client key from the TikTok developer portal into '
+          'pubspec.yaml, your TikTokAuthConfig and Info.plist.',
+    );
+  } else {
+    report.pass('Client key: $clientKey');
+  }
+  report.pass('Redirect URI: $redirectUri');
 
   final ios = _checkIos(
     report,
@@ -221,6 +229,13 @@ Future<int> runDoctor(
   sink.write(report.render(color: options.color));
   return report.errorCount == 0 ? 0 : 1;
 }
+
+/// Whether [clientKey] is a template value such as `YOUR_TIKTOK_CLIENT_KEY`
+/// or `awxxxxxxxx`.
+bool _isPlaceholder(String clientKey) => RegExp(
+  r'^(your[_\-]|<)|x{4,}',
+  caseSensitive: false,
+).hasMatch(clientKey);
 
 IosProject? _checkIos(
   DoctorReport report,

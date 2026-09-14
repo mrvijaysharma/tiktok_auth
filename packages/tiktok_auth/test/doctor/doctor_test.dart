@@ -183,6 +183,19 @@ DEVELOPMENT_TEAM = ABCDE12345;
     expect(output, contains('Client key: other'));
   });
 
+  test('reports a placeholder client key', () async {
+    for (final key in [
+      'YOUR_TIKTOK_CLIENT_KEY',
+      'awxxxxxxxx',
+      '<client-key>',
+    ]) {
+      final (code, output) = await run(['--client-key', key, '--offline']);
+      expect(code, 1, reason: key);
+      expect(output, contains('Client key "$key" is a placeholder.'));
+      expect(output, isNot(contains('✓ Client key:')));
+    }
+  });
+
   test('skips network checks when offline', () async {
     final (code, output) = await run(
       ['--offline'],

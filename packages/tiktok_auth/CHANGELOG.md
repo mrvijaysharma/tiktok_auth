@@ -8,4 +8,5 @@
 * `package:tiktok_auth/testing.dart` with `FakeTikTokAuthPlatform`.
 * `dart run tiktok_auth:doctor` checks Info.plist, entitlements, manifest
   placeholders, `apple-app-site-association` and `assetlinks.json`, and prints
-  signing key fingerprints.
+  signing key fingerprints. It also flags placeholder client keys such as
+  `YOUR_TIKTOK_CLIENT_KEY`.
